@@ -93,14 +93,13 @@ class Store:
         if recipe_id in self.recipes:
             return self.recipes[recipe_id]
     
-    def get_ingredient(self, ingred_name: str, ingred_quant: int):
+    def get_ingredient(self, ingred_id: str, ingred_quant: int):
         if ingred_quant <= 0:
             raise InvalidIngredientQuantity()
-        ingred_id = self.name_to_id(ingred_name)
         if ingred_id in self.ingredients:
             ingred = self.ingredients[ingred_id]
             if ingred.quantity < ingred_quant:
-                raise IngredientOutOfStock(f"{ingred_name} running Low: {ingred.quantity} ml.")
+                raise IngredientOutOfStock(f"{ingred.name} running Low: {ingred.quantity} ml.")
             else:
                 ingred.quantity -= ingred_quant
             return ingred_quant
