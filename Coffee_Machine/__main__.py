@@ -3,50 +3,82 @@ from typing import List, Tuple
 
 from components.Outlet import Outlet
 from components.Store import Store
-from lib.color_codes import *
 
 
 class Coffee_Machine:
+    """
+    The Coffee_Machine is responsible for interacting with the user
+    """
+
     def __init__(self, outlet_count: int) -> None:
+        """
+        Initializes the store and the list of Outlets for the Coffee_Machine
+        Params
+        ------
+        outlet_count: int
+            Number of Outlets of the Coffee_Machine
+        """
         self.outlets = []
         self.item_counter = 0
         self._store = Store()
         for i in range(outlet_count):
             self.outlets.append(Outlet(i))
 
-    async def prepare(self, item_list: List[str]):
-
-        while item_list != []:
+    async def prepare(self, bev_list: List[str]) -> None:
+        """
+        Prepares Beverages
+        Params
+        ------
+        bev_list: List[str]
+            List of names of the beverages
+        """
+        while bev_list:
+            job_list = []
             for outlet in self.outlets:
-                while (
-                    self.item_counter < len(item_list)
-                    and outlet.get_ingredients(
-                        item_list[self.item_counter], self._store
-                    )
-                    is False
-                ):
+                if self.item_counter >= len(bev_list):
+                    break
+
+                while self.item_counter < len(bev_list) and not outlet.get_ingredients(
+                    bev_list[self.item_counter], self._store
+                ):  # The while loop runs till we find an item that can be assigned to the current outlet
                     self.item_counter += 1
                 else:
                     self.item_counter += 1
-
-            job_list = []
-            for outlet in self.outlets:
+                # if outlet isBusy i.e. got the ingredients, it starts preparing
                 if outlet.isBusy:
                     job_list.append(asyncio.create_task(outlet.prepare()))
+
+            # Wait for all outlets to complete
             if job_list:
                 await asyncio.wait(job_list)
 
-            item_list = item_list[self.item_counter :]
+            # Remove the beverages from the queue that are parsed
+            bev_list = bev_list[self.item_counter :]
             self.item_counter = 0
 
-    def add_ingredient(self, name: str, quantity: int):
+    def add_ingredient(self, name: str, quantity: int) -> None:
+        """
+        Add ingredients to store
+        Params
+        ------
+        name: str
+            Name of the Ingredient
+        quantity: int
+            Quantity of Ingredient to be Added
+        """
         self._store.add_ingredient(name, quantity)
 
-    def add_recipe(self, name: str, ingreds: List[Tuple[str, int]]):
-        try:
-            self._store.add_recipe(name, ingreds)
-        except Exception as e:
-            print(FAIL + str(e) + ENDC)
+    def add_recipe(self, name: str, ingreds: List[Tuple[str, int]]) -> None:
+        """
+        Add recipe to store
+        Params
+        ------
+        name: str
+            Name of the Recipe
+        ingreds: List[Tuple[str, int]]
+            List of Ingredients and quantity in a tuple
+        """
+        self._store.add_recipe(name, ingreds)
 
 
 if __name__ == "__main__":
@@ -76,7 +108,15 @@ if __name__ == "__main__":
             ("tea_leaves_syrup", 30),
         ],
     )
-    # cm.add_recipe("green_tea", [("hot_water", 100),("sugar_syrup", 50),("ginger_syrup", 30),("green_mixture", 30)])
+    cm.add_recipe(
+        "green_tea",
+        [
+            ("hot_water", 100),
+            ("sugar_syrup", 50),
+            ("ginger_syrup", 30),
+            ("green_mixture", 30),
+        ],
+    )
     cm.add_recipe(
         "hot_coffee",
         [
