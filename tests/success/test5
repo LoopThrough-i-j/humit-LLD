@@ -1,0 +1,8 @@
+[94m preparing hot_tea [0m
+[91m green_mixture running Low: 0 ml. [0m
+[96m green_tea cannot be prepared [0m
+[94m preparing hot_coffee [0m
+[91m hot_water running Low: 200 ml. [0m
+[96m black_tea cannot be prepared [0m
+[92m hot_tea prepared [0m
+[92m hot_coffee prepared [0m

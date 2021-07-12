@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional, Tuple
 
-from lib.Exceptions import IngredientOutOfStock, InvalidIngredientQuantity
+from Coffee_Machine.lib.Exceptions import (
+    IngredientOutOfStock,
+    InvalidIngredientQuantity,
+)
 
 
 class Ingredient:
@@ -137,23 +140,23 @@ class Store:
         if recipe_id in self.recipes:
             return self.recipes[recipe_id]
 
-    def get_ingredient(self, ingred_id: str, ingred_quant: int) -> None:
+    def get_ingredients(self, ingreds: Dict[str, int]) -> None:
         """
         Get Ingredient from store, throws Exception if not found
         Params
         ------
-        ingred_id: str
-            Id of Ingredient
-        ingred_quant: int
-            Quantity of Ingredient
+        ingreds: Dict[str, int]
+            Key value pair of Ingredient id and quantity
         """
-        if ingred_quant < 0:
-            raise InvalidIngredientQuantity()
+        for ingred_id, ingred_quant in ingreds.items():
+            if ingred_quant < 0:
+                raise InvalidIngredientQuantity()
 
-        ingred = self.ingredients[ingred_id]
-        if ingred.quantity < ingred_quant:
-            raise IngredientOutOfStock(
-                f"{ingred.name} running Low: {ingred.quantity} ml."
-            )
-        else:
-            ingred.quantity -= ingred_quant
+            ingred = self.ingredients[ingred_id]
+            if ingred.quantity < ingred_quant:
+                raise IngredientOutOfStock(
+                    f"{ingred.name} running Low: {ingred.quantity} ml."
+                )
+
+        for ingred_id, ingred_quant in ingreds.items():
+            self.ingredients[ingred_id].quantity -= ingred_quant

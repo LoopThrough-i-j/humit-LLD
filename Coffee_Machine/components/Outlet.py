@@ -1,8 +1,8 @@
 import asyncio
 
-from components.Store import Store
-from lib.color_codes import ENDC, FAIL, OKBLUE, OKCYAN, OKGREEN
-from lib.Exceptions import IngredientNotFound, IngredientOutOfStock
+from Coffee_Machine.components.Store import Store
+from Coffee_Machine.lib.color_codes import ENDC, FAIL, OKBLUE, OKCYAN, OKGREEN
+from Coffee_Machine.lib.Exceptions import IngredientNotFound, IngredientOutOfStock
 
 
 class Outlet:
@@ -41,9 +41,7 @@ class Outlet:
             self.recipe = store.fetch_recipe(recipe_name)
             assert self.recipe is not None, "Recipe not valid"
             ingreds = self.recipe.ingredients
-            # Get Ingredients from store
-            for ingred_id in ingreds:
-                store.get_ingredient(ingred_id, ingreds[ingred_id])
+            store.get_ingredients(ingreds)
             # If fetching ingredients is successfull set Outlet to busy
             self.isBusy = True
             print(OKBLUE + f"preparing {self.recipe.name}" + ENDC)
