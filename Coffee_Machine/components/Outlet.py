@@ -12,7 +12,7 @@ class Outlet:
 
     def __init__(self, id: int) -> None:
         """
-        Initializes with no recipe, isBuzy False and the counter id 
+        Initializes with no recipe, isBuzy False and the counter id
         Params
         ------
         id: int
@@ -24,14 +24,13 @@ class Outlet:
 
     def get_ingredients(self, recipe_name: str, store: Store) -> bool:
         """
-        Initializes with no recipe, isBuzy False and the counter id 
+        Initializes with no recipe, isBuzy False and the counter id
         Params
         ------
         recipe_name: str
             Name of Recipe
         store: Store
             Instance of Current Store
-        
         Return
         ------
         bool

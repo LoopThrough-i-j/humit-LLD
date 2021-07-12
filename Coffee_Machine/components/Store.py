@@ -18,7 +18,7 @@ class Ingredient:
 
     def __init__(self, id: str, name: str, quantity: int) -> None:
         self.id = id
-        self.name = name.title()
+        self.name = name
         self.quantity = quantity
 
     def __repr__(self) -> str:
@@ -41,7 +41,7 @@ class Recipe:
 
     def __init__(self, id: str, name: str, ingredients: Dict[str, int]) -> None:
         self.id = id
-        self.name = name.title()
+        self.name = name
         self.ingredients = ingredients
 
     def __repr__(self) -> str:
@@ -64,7 +64,8 @@ class Store:
         self.ingredients: Dict[str, Ingredient] = {}
         self.recipes: Dict[str, Recipe] = {}
 
-    def name_to_id(self, name: str) -> str:
+    @staticmethod
+    def name_to_id(name: str) -> str:
         """
         chnage name of an item to id
         """
@@ -86,7 +87,7 @@ class Store:
         """
         if quantity < 0:
             raise InvalidIngredientQuantity()
-        ing_id = self.name_to_id(name)
+        ing_id = Store.name_to_id(name)
         if ing_id in self.ingredients:
             self.ingredients[ing_id].quantity += quantity
         else:
@@ -94,25 +95,26 @@ class Store:
 
         return self.ingredients[ing_id]
 
-    def add_recipe(self, name: str, ingreds: List[Tuple[str, int]]) -> Recipe:
+    def add_recipe(self, name: str, ingreds: Dict[str, int]) -> Recipe:
         """
         Add Recipe to store
         Params
         ------
         name: str
             Name of Recipe
-        ingreds: List[Tuple[str, int]]
-            List of Ingredients with name and quantity
+        ingreds: Dict[str, int]
+            Dict of Ingredients with name and quantity
         Return
         ------
         Recipe
             New Recipe generated
         """
-        recipe_id = self.name_to_id(name)
+        recipe_id = Store.name_to_id(name)
         recipe_name = name
         recipe_ingreds: Dict[str, int] = {}
-        for ing_name, ing_quan in ingreds:
-            ing_id = self.name_to_id(ing_name)
+        for ing_name in ingreds:
+            ing_quan = ingreds[ing_name]
+            ing_id = Store.name_to_id(ing_name)
             if ing_id not in self.ingredients:
                 self.add_ingredient(ing_name, 0)
             recipe_ingreds[ing_id] = ing_quan
@@ -131,7 +133,7 @@ class Store:
         Optional[Recipe]
             Recipie if found
         """
-        recipe_id = self.name_to_id(recipe_name)
+        recipe_id = Store.name_to_id(recipe_name)
         if recipe_id in self.recipes:
             return self.recipes[recipe_id]
 
