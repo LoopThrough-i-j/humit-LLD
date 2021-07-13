@@ -18,7 +18,8 @@ def run_machine(input_sample, file_name):
     ) as r:
         out = o.read()
         exp = r.read()
-        return  out, exp
+        return out, exp
+
 
 def test_1() -> None:
     inp_sample = {
@@ -64,6 +65,7 @@ def test_1() -> None:
     out, exp = run_machine(inp_sample, "test1")
     assert out == exp
 
+
 def test_2() -> None:
     inp_sample = {
         "machine": {
@@ -108,6 +110,7 @@ def test_2() -> None:
     out, exp = run_machine(inp_sample, "test2")
     assert out == exp
 
+
 def test_3() -> None:
     inp_sample = {
         "machine": {
@@ -145,6 +148,7 @@ def test_3() -> None:
     }
     out, exp = run_machine(inp_sample, "test3")
     assert out == exp
+
 
 def test_4() -> None:
     inp_sample = {
@@ -189,6 +193,7 @@ def test_4() -> None:
     }
     out, exp = run_machine(inp_sample, "test4")
     assert out == exp
+
 
 def test_5() -> None:
     inp_sample = {

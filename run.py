@@ -1,4 +1,3 @@
-
 from Coffee_Machine import Coffee_Machine
 
 input_sample = {
