@@ -2,7 +2,7 @@
 
 ## Scripts
 
-```
+```bash
 
 # Setup
 bash tools/setup.sh
